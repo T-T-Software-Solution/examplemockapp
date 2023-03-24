@@ -1,0 +1,158 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@{
+    ViewData["Title"] = "sighting";
+}
+
+<div class="modal fade" id="sightingModel" style="z-index:1500" tabindex="-1" role="dialog" aria-labelledby="sightingModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sightingModelLabel">บันทึกข้อมูล sighting</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <input class="form-control" type="hidden" id="sighting_id" />
+
+                        <div class='row'></div>
+                        <div class='row'></div>
+                        <div class='row'>
+                            <div class="form-group col-md-4">
+                                <label id="lab_sighting_alien_id" for="sighting_alien_id">Alien</label>
+                                <select class="form-control" id="sighting_alien_id" iLabel="Alien" iRequire="true" iGroup="sighting"></select>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label id="lab_sighting_found_date" for="sighting_found_date">Found Date</label>
+                                <input class="form-control" type="text" id="sighting_found_date" data-provide="datepicker" data-date-language="th-th" iLabel="Found Date" iRequire="true" iGroup="sighting" />
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label id="lab_sighting_witness" for="sighting_witness">Witness</label>
+                                <input class="form-control" type="text" id="sighting_witness" iLabel="Witness" iRequire="true" iGroup="sighting" />
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class="form-group col-md-12">
+                                <label id="lab_sighting_location" for="sighting_location">Location</label>
+                                <textarea class="form-control" rows="4" cols="50" id="sighting_location" iLabel="Location" iRequire="true" iGroup="sighting"></textarea>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                <button type="button" class="btn btn-primary" onclick="javascript:sighting_PutUpdate()">บันทึก</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@Configuration["SiteInformation:modulename"]</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item "><a href="@Configuration["SiteInformation:mainsite"]">หน้าแรก</a></li>
+                    <li class="breadcrumb-item "><a href="@Configuration["SiteInformation:mainsite"]@Configuration["SiteInformation:appsite"]">@Configuration["SiteInformation:modulename"]</a></li>
+                    <li class="breadcrumb-item active">sighting</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+
+        <!-- general form elements -->
+        <div class="card card-primary">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="form-group col-md-3">
+                        <label id='lab_s_sighting_alien_id' for='s_sighting_alien_id'>Alien</label>
+                        <select class="form-control" id="s_sighting_alien_id" iLabel="Alien" iRequire="true" iGroup="s_sighting" title='Alien' placeholder='Alien'></select>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label id='lab_s_sighting_found_date' for='s_sighting_found_date'>Found Date</label>
+                        <input class="form-control" type="text" id="s_sighting_found_date" data-provide="datepicker" data-date-language="th-th" iLabel="Found Date" iRequire="true" iGroup="s_sighting" title='Found Date' placeholder='Found Date' />
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label id='lab_s_sighting_location' for='s_sighting_location'>Location</label>
+                        <input class="form-control" type="text" id="s_sighting_location" iLabel="Location" iRequire="true" iGroup="s_sighting" title='Location' placeholder='Location' />
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label id='lab_s_sighting_witness' for='s_sighting_witness'>Witness</label>
+                        <input class="form-control" type="text" id="s_sighting_witness" iLabel="Witness" iRequire="true" iGroup="s_sighting" title='Witness' placeholder='Witness' />
+                    </div>
+
+
+                    <div class="form-group col-sm-3">
+                        <button class="btn btn-info" onclick="javascript:sighting_DoSearch();"><i class="fa fa-search" style="font-size: 14px;"></i> ค้นหา</button>
+                        <button class="btn btn-info" onclick="javascript:sighting_GoCreate();"><i class="fa fa-plus" style="font-size: 14px;"></i> เพิ่มรายการ</button>
+                        <button style="display:none;" class="btn btn-info" onclick="javascript:sighting_GetSelect('id');">ดึงตัวเลือก</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        <!-- general form elements -->
+        <div class="card card-primary">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="sightingTable" class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <!--<th>เลือก</th>-->
+                                    <th>เครื่องมือ</th>
+                                    <th><label id='h_sighting_alien_id'>Alien</label></th>
+                                    <th><label id='h_sighting_found_date'>Found Date</label></th>
+                                    <th><label id='h_sighting_location'>Location</label></th>
+                                    <th><label id='h_sighting_witness'>Witness</label></th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+    </div><!-- /.container-fluid -->
+
+</section>
+<!-- /.content -->
+@section FooterPlaceHolder{
+    <script src="~/js/sighting/sighting.js"></script>
+    <script>
+        $(document).ready(function () {
+            sighting_InitiateDataTable();
+            sighting_InitialForm();
+            SetupValidationRemark("sighting");
+        });
+    </script>
+}
+

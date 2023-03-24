@@ -1,0 +1,11 @@
+﻿using System.Collections.Generic;
+
+namespace {0}.Domain
+<1>
+    public class {1}InputModel
+    <1>
+{2}
+        public string? active_mode <1> get; set; <2>
+    <2>
+<2>
+

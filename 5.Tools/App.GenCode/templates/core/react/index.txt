@@ -1,0 +1,31 @@
+﻿import React, <1> useState <2> from 'react'
+import {2}Form from './{2}Form'
+import {2}Datatable from './{2}Datatable'
+import {2}Searchform from './{2}Searchform'
+import <1> Card, Modal <2> from 'antd';
+
+const {2} = () => <1>
+
+  const [workingMode, setWorkingMode] = useState({0}list{0});
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [searchCondition, setSearchCondition] = useState(null);
+
+  const handleCancel = () => <1>
+    setWorkingMode({0}list{0});
+  <2>;
+
+  return (
+    <>
+      <Card>
+        <{2}Searchform setSearchCondition=<1>setSearchCondition<2> />
+      </Card>
+      <{2}Datatable setSelectedItem=<1>setSelectedItem<2> setWorkingMode=<1>setWorkingMode<2> searchCondition=<1>searchCondition<2> />
+      <Modal title={0}Edit Data{0} visible=<1>workingMode !== {0}list{0}<2> footer=<1>null<2> onCancel=<1>handleCancel<2>>
+        <{2}Form data=<1>selectedItem<2> />
+      </Modal>
+
+    </>
+  )
+<2>
+
+export default {2}

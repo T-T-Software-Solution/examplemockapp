@@ -1,0 +1,242 @@
+﻿using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using {1}.Domain;
+using System.IO;
+using System.Web;
+using System.Net;
+using Microsoft.Extensions.Options;
+using System.Data;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using App.Core;
+
+namespace {1}.Database
+<1>
+    public class {2}Service : I{2}Service
+    <1>
+        private IBaseRepository<{19}Entity, {16}> _repository;
+        private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
+        private readonly DataContext _dataContext;
+
+        public {2}Service(
+            IBaseRepository<{19}Entity, {16}> repository, 
+            IMapper mapper, 
+            IConfiguration configuration,
+            DataContext dataContext
+            )
+        <1>
+            _repository = repository;
+            _mapper = mapper;
+            _configuration = configuration;
+            _dataContext = dataContext;
+        <2>
+
+        #region Private Functions
+        private {19}Entity GetEntity({2}InputModel model)
+        <1>
+            return _mapper.Map<{19}Entity>(model);
+        <2>
+        private {2}ViewModel GetDto({19}Entity entity)
+        <1>
+            return _mapper.Map<{2}ViewModel>(entity);
+        <2>
+       
+        #endregion
+
+        #region Public Functions
+        #region Query Functions
+
+        public async Task<{2}ViewModel?> GetAsync({16} {17})
+        <1>
+            var entity = await _repository.GetAsync({17});
+
+            return GetDto(entity);
+        <2>
+
+        public async Task<{19}Entity?> GetEntityAsync({16} {17})
+        <1>
+            var entity = await _repository.GetAsync({17});
+
+            return entity;
+        <2>
+
+        public async Task<{2}WithSelectionViewModel> GetWithSelectionAsync({16} {17})
+        <1>
+            var entity = await _repository.GetAsync({17});
+            var i = _mapper.Map<{2}WithSelectionViewModel>(entity);
+{15}
+
+            return i;
+        <2>
+
+        public async Task<{2}WithSelectionViewModel> GetBlankItemAsync()
+        <1>
+            var i = new {2}WithSelectionViewModel();
+{15}
+
+            return i;
+        <2>
+
+        public async Task<List<{2}ViewModel>> GetListBySearchAsync({2}SearchModel model)
+        <1>
+            var data = await (
+                from m_{13} in _dataContext.{19}s
+{10}
+
+				where
+{18}
+
+                orderby m_{13}.created descending
+                select new {2}ViewModel()
+                <1>
+{11}
+{12}
+                    isActive = m_{13}.isActive,
+                    created = m_{13}.created,
+                    updated = m_{13}.updated
+                <2>
+            ).Take(1000).ToListAsync();
+
+            return data;
+        <2>
+
+        #endregion        
+
+        #region Manipulation Functions
+
+<new_key_method>
+
+        public async Task<{2}ViewModel?> InsertAsync({2}InputModel model, bool is_force_save)
+        <1>
+            var entity = GetEntity(model);
+            entity.{17} = Guid.NewGuid();
+
+{5}
+            
+            if (is_force_save)
+            <1>
+                var inserted = await _repository.InsertAsync(entity);
+                return await GetAsync(inserted.{17});
+            <2>
+            else
+            <1>
+                await _repository.InsertWithoutCommitAsync(entity);
+                return _mapper.Map<{2}ViewModel>(entity);
+            <2>
+        <2>
+
+        public async Task<{2}ViewModel?> UpdateAsync({16} {17}, {2}InputModel model, bool is_force_save)
+        <1>
+            var existingEntity = await _repository.GetAsync({17});
+            if (existingEntity != null)
+            <1>
+{6}
+
+                if (is_force_save)
+                <1>
+                    var updated = await _repository.UpdateAsync({17}, existingEntity);
+                    return await GetAsync(updated.{17});
+                <2>
+                else
+                <1>
+                    await _repository.UpdateWithoutCommitAsync({17}, existingEntity);
+                    return _mapper.Map<{2}ViewModel>(existingEntity);
+                <2>
+            <2>
+            else
+            throw new Exception("No data to update");
+        <2>
+
+		public async Task<string> UpdateMultipleAsync(List<{2}InputModel> model, bool is_force_save)
+        <1>
+            foreach(var i in model)
+            <1>
+                if (i.active_mode == {0}1{0} && i.{17}.HasValue) // update
+                <1>                    
+                    var existingEntity = await _repository.GetAsync(i.{17}.Value);
+                    if (existingEntity != null)
+                    <1>
+{14}
+
+                        await _repository.UpdateWithoutCommitAsync(i.{17}.Value, existingEntity);
+                    <2>
+                <2>
+                else if (i.active_mode == {0}1{0} && !i.{17}.HasValue) // add
+                <1>
+                    var entity = GetEntity(i);
+                    entity.{17} = Guid.NewGuid();
+                    await _repository.InsertWithoutCommitAsync(entity);
+                <2>
+                else if (i.active_mode == {0}0{0} && i.{17}.HasValue) // remove
+                <1>                    
+                    await _repository.DeleteWithoutCommitAsync(i.{17}.Value);
+                <2>
+                else if (i.active_mode == {0}0{0} && !i.{17}.HasValue)
+                <1>
+                    // nothing to do
+                <2>                
+            <2>
+            if (is_force_save)
+            <1>
+                await _dataContext.SaveChangesAsync();
+            <2> 
+
+            return model.Count().ToString();
+        <2>
+
+        public async Task DeleteAsync({16} {17})
+        <1>
+            await _repository.DeleteAsync({17});
+
+            return;
+        <2>
+
+		public async Task RefreshAutoFieldOfAllData()
+        <1>
+            var all_items = _dataContext.{19}s;
+            foreach (var item in all_items)
+            <1>
+                
+            <2>
+            await _dataContext.SaveChangesAsync();
+        <2>
+
+        #endregion
+
+        #region Match Item
+{4}
+        #endregion
+
+        #endregion
+
+        public async Task<Stream> GetReportStreamAsync({2}ReportRequestModel model)
+        <1>
+            using (var httpclient = new HttpClient())
+            <1>
+                string mainurl = MyHelper.GetConfig(_configuration, {0}JasperReportServer:MainURL{0});
+                string reportsite = MyHelper.GetConfig(_configuration, {0}JasperReportServer:reportsite{0});
+                string username = MyHelper.GetConfig(_configuration, {0}JasperReportServer:username{0});
+                string password = MyHelper.GetConfig(_configuration, {0}JasperReportServer:password{0});
+
+                string url = ${0}<1>mainurl<2><1>reportsite<2>/xxใส่ชื่อรายงานตรงนี้xx.<1>model.filetype<2>?<1>MyHelper.GetParameterForJasperReport(model)<2>&j_username=<1>username<2>&j_password=<1>password<2>{0};
+
+                if (model.filetype == {0}xlsx{0})
+                <1>
+                    url += {0}&ignorePagination=true{0};
+                <2>
+
+                using (var data = await httpclient.GetAsync(url))
+                using (var content = data.Content)
+                <1>
+                    return await content.ReadAsStreamAsync();
+                <2>
+                
+            <2>
+        <2>
+
+    <2>
+<2>

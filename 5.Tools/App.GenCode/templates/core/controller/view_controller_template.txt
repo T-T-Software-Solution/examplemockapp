@@ -1,0 +1,62 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using {2}.Controllers;
+using App.Web.Models;
+
+namespace {2}.Controllers
+<1>
+    public class {1}ViewController : Controller
+    <1>       
+        private ILogger<{1}ViewController> _logger;
+		private IConfiguration Configuration <1> get; set; <2>
+		
+        /// <summary>
+        /// Default constructure for dependency injection
+        /// </summary>
+		/// <param name={0}configuration{0}></param>
+        /// <param name="logger"></param>
+        public {1}ViewController(ILogger<{1}ViewController> logger, IConfiguration configuration)
+        <1>
+            _logger = logger;
+			Configuration = configuration;
+        <2>
+
+        public IActionResult {1}()
+        <1>
+			//if (!MyHelper.checkAuth(Configuration, HttpContext)) return Unauthorized(); // Or UnauthorizedView
+            return View();
+        <2>
+
+        public IActionResult {1}_d()
+        <1>
+			//if (!MyHelper.checkAuth(Configuration, HttpContext)) return Unauthorized(); // Or UnauthorizedView
+            return View();
+        <2>
+
+		//public IActionResult {1}_report()
+        //<1>
+		//    if (!MyHelper.checkAuth(Configuration, HttpContext)) return Unauthorized(); // Or UnauthorizedView
+        //    return View();
+        //<2>
+
+        //public IActionResult {1}_inline()
+        //<1>
+		//    if (!MyHelper.checkAuth(Configuration, HttpContext)) return Unauthorized(); // Or UnauthorizedView
+        //    return View();
+        //<2>
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        <1>
+            return View(new ErrorViewModel <1> RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier <2>);
+        <2>
+    <2>
+<2>
+
+

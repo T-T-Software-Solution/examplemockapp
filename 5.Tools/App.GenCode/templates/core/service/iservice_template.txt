@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using {1}.Domain;
+
+namespace {1}.Core
+<1>
+    public interface I{2}Service : IBaseService<{6}, {2}InputModel, {2}ViewModel>
+    <1>
+        Task<{2}ViewModel?> InsertAsync({2}InputModel model, bool is_force_save);
+        Task<{2}ViewModel?> UpdateAsync({6} {7}, {2}InputModel model, bool is_force_save);
+     	Task<List<{2}ViewModel>> GetListBySearchAsync({2}SearchModel model);
+		Task<string> UpdateMultipleAsync(List<{2}InputModel> model, bool is_force_save);
+        Task<{2}WithSelectionViewModel> GetWithSelectionAsync({6} {7});
+        Task<{2}WithSelectionViewModel> GetBlankItemAsync();
+		Task RefreshAutoFieldOfAllData();
+        Task<{2}Entity?> GetEntityAsync({6} {7});
+        Task<Stream> GetReportStreamAsync({2}ReportRequestModel model);
+
+{4}
+
+    <2>
+<2>
+

@@ -1,0 +1,71 @@
+﻿import React, <1> useEffect, useState <2> from 'react'
+import <1> Form, Input, Button, Spin <2> from 'antd';
+import axios from 'axios';
+import <1> env <2> from '../../../configs/EnvironmentConfig';
+
+const {2}Form = (props) => <1>
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    let [theform] = Form.useForm();
+    const layout = <1>
+        labelCol: <1> span: 6 <2>,
+        wrapperCol: <1> span: 18 <2>,
+    <2>;
+    const tailLayout = <1>
+        wrapperCol: <1> offset: 6, span: 18 <2>,
+    <2>;
+
+    const onFinish = values => <1>
+        //props.handleOk(values);
+        console.log(values);
+    <2>;
+
+    const onFinishFailed = errorInfo => <1>
+        console.log('Failed:', errorInfo);
+    <2>;
+
+    useEffect(() => <1>
+        const fetchData = async () => <1>
+            try <1>
+                setIsLoading(true);
+                //await new Promise(resolve => setTimeout(resolve, 400));
+                axios.get({0}https://localhost:7050/api/{2}/{0} + props.data.id)
+                .then(res => <1>
+                    theform.setFieldsValue(res.data);
+                    console.log(res.data);
+                    setIsLoading(false);
+                <2>);                
+            <2> catch (error) <1>
+                console.error(error.message);
+            <2>
+        <2>
+        fetchData();
+    <2>, [props.data]);
+
+    return (
+        <>
+        <1>isLoading? <Spin /> : 
+        <Form
+        <1>...layout<2>
+        form=<1>theform<2>
+        name={0}theform{0}
+        onFinish=<1>onFinish<2>
+        onFinishFailed=<1>onFinishFailed<2>
+    >
+{3}
+
+        <Form.Item <1>...tailLayout<2>>
+            <Button type={0}primary{0} htmlType={0}submit{0}>
+                Submit
+            </Button>
+        </Form.Item>
+
+    </Form>
+        <2>
+        </>
+        
+    )
+<2>
+
+export default {2}Form

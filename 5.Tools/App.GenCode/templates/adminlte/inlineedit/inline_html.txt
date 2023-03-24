@@ -1,0 +1,86 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@<1>
+    Layout = {0}~/Views/Shared/_Layout.cshtml{0};
+    ViewData[{0}Title{0}] = {0}{3}{0};
+<2>
+
+<!-- Content Header (Page header) -->
+<section class={0}content-header{0}>
+    <div class={0}container-fluid{0}>
+        <div class={0}row mb-2{0}>
+            <div class={0}col-sm-6{0}>
+                <h1>@Configuration[{0}SiteInformation:modulename{0}]</h1>
+            </div>
+            <div class={0}col-sm-6{0}>
+                <ol class={0}breadcrumb float-sm-right{0}>
+                    <li class={0}breadcrumb-item {0}><a href={0}@Configuration[{0}SiteInformation:mainsite{0}]{0}>หน้าแรก</a></li>
+                    <li class={0}breadcrumb-item {0}><a href={0}@Configuration[{0}SiteInformation:mainsite{0}]@Configuration[{0}SiteInformation:appsite{0}]{0}>@Configuration[{0}SiteInformation:modulename{0}]</a></li>
+                    <li class={0}breadcrumb-item active{0}>{3}</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class={0}content{0}>
+    <div class={0}container-fluid{0}>
+
+        <!-- general form elements -->
+        <div class={0}card card-primary{0}>
+            <div class={0}card-header{0}>
+                <h3 class={0}card-title{0}>จัดการ {3}</h3>
+            </div>
+            <div class={0}card-body{0}>
+                <div class={0}row{0}>
+                    <div class={0}col-md-12{0}>
+                        <button type={0}button{0} class={0}btn btn-primary{0} onclick={0}javascript:{1}_Add(){0}>
+                            <i class={0}fa fa-plus{0}></i> เพิ่มรายการ
+                        </button>                        
+                    </div>
+                </div>
+                <div class={0}row{0}>
+                    <div class={0}col-md-12{0}>
+                        <table id={0}{1}Table{0} class={0}display table table-bordered table-striped{0}>
+                            <thead>
+                                <tr>
+                                    <th>ลำดับ</th>
+{2}
+                                    <th>กิจกรรม</th>
+                                </tr>
+                            </thead>
+                            <tbody class={0}thin-border-bottom{0} id={0}{1}Body{0}></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class={0}card-footer{0}>
+                <button type={0}button{0} class={0}btn btn-default{0} data-dismiss={0}modal{0}>ยกเลิก</button>
+                <button type={0}button{0} class={0}btn btn-primary{0} onclick={0}javascript:{1}_Save(getUrlParameter('id')){0}>บันทึก</button>
+            </div>
+        </div>
+        <!-- /.card -->
+
+    </div><!-- /.container-fluid -->
+
+</section>
+<!-- /.content -->
+
+@section FooterPlaceHolder<1>
+    <script src={0}~/js/{1}/{1}_inline.js{0}></script>
+    <script>
+        $(document).ready(function () <1>
+            //var id = getUrlParameter({0}id{0});
+            //if (id) <1>
+            //    {1}_InitialForm(id);
+            //<2>
+            {1}_InitialForm('');
+        <2>);
+
+        $(document).on({0}change{0}, {0}.input_score{0}, function () <1>
+            {1}_Summary();
+        <2>);
+    </script>
+<2>

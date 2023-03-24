@@ -1,0 +1,172 @@
+﻿var {1}_editMode = {0}CREATE{0};
+var {1}_API = {0}/api/v1/{1}/{0};
+
+//================= Form Data Customizaiton =========================================
+
+function {1}_FeedDataToForm(data) <1>
+{2}
+<2>
+
+function {1}_GetFromForm() <1>
+    var {1}Object = new Object();
+{3}
+
+    return {1}Object;
+<2>
+
+function {1}_InitialForm(s) <1>
+    var successFunc = function (result) <1>
+        {1}_FeedDataToForm(result);
+        if (s) <1>
+            // Incase model popup
+            $({0}#{1}Model{0}).modal({0}show{0});
+        <2>
+    <2>;
+
+    AjaxGetRequest(apisite + {1}_API + {0}GetBlankItem{0}, successFunc, AlertDanger);
+<2>
+
+//================= Form Mode Setup and Flow =========================================
+
+function {1}_GoCreate() <1>
+    // Incase model popup
+    {1}_SetCreateForm(true);
+
+    // Incase open new page
+    //window_open({0}/{1}View/{1}_d{0});
+<2>
+
+function {1}_GoEdit(a) <1>
+    // Incase model popup
+    {1}_SetEditForm(a);
+
+    // Incase open new page
+    //window_open({0}/{1}View/{1}_d?id={0} + a);
+<2>
+
+function {1}_SetEditForm(a) <1>
+    var successFunc = function (result) <1>
+        {1}_editMode = {0}UPDATE{0};
+        {1}_FeedDataToForm(result);
+
+        // Incase model popup
+        $({0}#{1}Model{0}).modal({0}show{0});
+    <2>;
+    AjaxGetRequest(apisite + {1}_API + a, successFunc, AlertDanger);
+<2>
+
+function {1}_SetCreateForm(s) <1>
+    {1}_editMode = {0}CREATE{0};
+	{1}_InitialForm(s);
+<2>
+
+function {1}_RefreshTable() <1>
+    // Incase model popup
+    {1}_DoSearch();
+
+    // Incase open new page
+    //window.parent.{1}_DoSearch();
+<2>
+
+function {1}_AfterInsert(id) <1>
+{10}
+<2>
+
+function {1}_AfterUpdate(id) <1>
+{10}
+<2>
+
+function {1}_AfterDelete(id) <1>
+{11}
+<2>
+
+//================= Update and Delete =========================================
+
+function {1}_PutUpdate() <1>
+    var data = {1}_GetFromForm();
+
+    //Update Mode
+    if ({1}_editMode === {0}UPDATE{0}) <1>
+        var successFunc1 = function (result) <1>
+            $({0}#{1}Model{0}).modal({0}hide{0});
+            AlertSuccess({0}ข้อมูลได้ถูกแก้ไขในระบบแล้ว{0});
+            {1}_RefreshTable();
+            {1}_AfterUpdate(result.id);
+        <2>;
+        AjaxPutRequest(apisite + {1}_API + data.id, data, successFunc1, AlertDanger);
+    <2>
+    // Create mode
+    else <1>
+        var successFunc2 = function (result) <1>
+            $({0}#{1}Model{0}).modal({0}hide{0});
+            AlertSuccess({0}ข้อมูลได้ถูกเพิ่มในระบบแล้ว{0});
+            {1}_RefreshTable();
+            {1}_AfterInsert(result.id);
+        <2>;
+        AjaxPostRequest(apisite + {1}_API, data, successFunc2, AlertDanger);
+    <2>
+<2>
+
+function {1}_GoDelete(a) <1>
+    if (confirm('คุณต้องการลบ ' + a + ' ใช่หรือไม่?')) <1>
+        var successFunc = function (result) <1>
+            $({0}#{1}Model{0}).modal({0}hide{0});
+            AlertSuccess({0}ข้อมูลได้ถูกลบออกจากระบบแล้ว{0});
+            {1}_RefreshTable();
+            {1}_AfterDelete(a);
+        <2>;
+        AjaxDeleteRequest(apisite + {1}_API + a, null, successFunc, AlertDanger);
+    <2>
+<2>
+
+//================= Data Table =========================================
+
+var {1}TableV;
+
+var {1}_setupTable = function (result) <1>
+	tmp = '{0}';
+    {1}TableV = $('#{1}Table').DataTable(<1>
+        {0}processing{0}: true,
+        {0}serverSide{0}: false,
+        {0}data{0}: result,
+        {0}columns{0}: [
+{6},
+            <1> {0}data{0}: {0}id{0} <2>
+        ],
+        {0}columnDefs{0}: [
+            <1>
+                {0}targets{0}: -1,
+                {0}data{0}: {0}id{0},
+                {0}render{0}: function (data, type, row, meta) <1>
+                    return {0}<a class='btn btn-primary btn-sm' href='javascript:{1}_GoEdit({0} + tmp + data + tmp + {0})'>แก้ไข</a> <a class='btn btn-primary btn-sm' href='javascript:{1}_GoDelete({0} + tmp + data + tmp + {0})'>ลบ</a>{0};
+                <2>
+            <2>],
+        {0}language{0}: <1>
+            {0}url{0}: {0}/DataTables-1.10.16/thai.json{0}
+        <2>,
+        {0}paging{0}: true,
+		{0}searching{0}: false
+    <2>);
+<2>;
+
+function {1}_InitiateDataTable() <1>
+    AjaxGetRequest(apisite + {0}/api/v1/{1}{0}, {1}_setupTable, AlertDanger);
+<2>
+
+function {1}_DoSearch() <1>
+    var s = $({0}#{1}_search_box{0}).val();
+    var reload = function (result) <1>
+        {1}TableV.destroy();
+        {1}_setupTable(result);
+    <2>;
+
+    AjaxGetRequest(apisite + {0}/api/v1/{1}?{7}={0}+s, reload, AlertDanger);
+<2>
+
+//================= File Upload =========================================
+
+{8}
+
+//================= Multi-Selection Function =========================================
+
+{9}

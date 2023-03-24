@@ -1,0 +1,68 @@
+﻿import React, <1> useState, useEffect <2> from 'react'
+import <1> Card, Table, Tooltip, Button, Modal, Spin <2> from 'antd';
+import <1> EyeOutlined, DeleteOutlined <2> from '@ant-design/icons';
+import axios from 'axios';
+import <1> env <2> from '../../../configs/EnvironmentConfig';
+
+const {2}Datatable = (props) => <1>
+
+    const [listData, setListData] = useState();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const showModal = (user) => <1>
+        props.setWorkingMode({0}edit{0});
+        props.setSelectedItem(user);
+    <2>;
+
+    const tableColumns = [
+        <1>
+            title: 'Actions',
+            dataIndex: 'actions',
+            render: (_, elm) => (
+                <div className={0}text-left d-flex justify-content-center{0}>
+                    <Tooltip title={0}View{0}>
+                        <Button type={0}primary{0} className={0}mr-2{0} icon=<1><EyeOutlined /><2> onClick=<1>() => <1> showModal(elm); <2><2> size={0}small{0} />
+                    </Tooltip>
+                    <Tooltip title={0}Delete{0}>
+                        <Button danger icon=<1><DeleteOutlined /><2> onClick=<1>() => <1> console.log(elm.id); <2><2> size={0}small{0} />
+                    </Tooltip>
+                </div>
+            )
+        <2>,
+{3}
+
+    ];
+
+    useEffect(async () => <1>
+        let parameter = {0}{0};
+        if (props.searchCondition) <1>
+            if (props.searchCondition.username) parameter += {0}username={0} + props.searchCondition.username;
+            if (parameter !== {0}{0}) parameter = {0}?{0} + parameter;
+        <2>
+        setIsLoading(true);
+        //await new Promise(resolve => setTimeout(resolve, 400));
+        axios.get(`https://localhost:7050/api/{2}$<1>parameter<2>`)
+            .then(res => <1>
+                setIsLoading(false);
+                setListData(res.data);
+            <2>)
+    <2>, [props.searchCondition]);
+
+    return (
+        <>
+            <1>isLoading ?
+                <Card>
+                    <Spin />
+                </Card>
+                :
+                <Card bodyStyle=<1><1> 'padding': '0px' <2><2>>
+                    <div className={0}table-responsive{0}>
+                        <Table columns=<1>tableColumns<2> pagination=<1><1> pageSize: 5 <2><2> rowKey='id' dataSource=<1>listData<2> />
+                    </div>
+                </Card>
+            <2>
+        </>
+    )
+<2>
+
+export default {2}Datatable

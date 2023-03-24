@@ -1,0 +1,3 @@
+﻿$('#{0}_{1}_file').change(function () <1>
+    UploadImage($('#{0}_{1}_file'), '{0}_{1}');
+<2>);

@@ -1,0 +1,33 @@
+﻿function {1}_{2}_CreateCheckBoxList(id, c) <1>
+    var successFunc = function (result) <1>
+        c.empty();
+        $.each(result, function (index, data) <1>
+            var li = $('<div class={0}form-check{0}><input class={0}form-check-input {1}_{2}-checkbox{0} type={0}checkbox{0} value={0}' + data.id + '{0}><label>' + data.name + '</label></div >');
+            c.append(li);
+        <2>);
+        if (id) <1> {1}_{2}_SetupChecked(id); <2>
+    <2>;
+    AjaxGetRequest(apisite + {0}/api/{4}{0}, successFunc, AlertDanger);
+<2>
+
+function {1}_{2}_SetupChecked(id) <1>
+    var successFunc = function (response) <1>        
+        var allRoles = document.getElementsByClassName('{1}_{2}-checkbox');
+        $(response).each(function (id, data) <1>
+            $(allRoles).each(function () <1>
+                if (data.{5} == $(this).attr({0}value{0}))
+                    $(this).attr({0}checked{0}, true);
+            <2>);
+        <2>)
+    <2>;
+    AjaxGetRequest(apisite + {0}/api/{3}/GetListBy{6}?{6}={0} + id, successFunc, AlertDanger);
+<2>
+
+function {1}_{2}_SaveSelection(id) <1>
+    var searchIDs = $({0}.{1}_{2}-checkbox:checkbox:checked{0}).map(function () <1>
+        return this.value;
+    <2>).toArray();
+        
+    AjaxPostRequest(apisite + {0}/api/{3}/InsertListBy{6}?{6}={0} + id, searchIDs, null, AlertDanger);
+<2>
+	

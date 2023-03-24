@@ -1,0 +1,56 @@
+﻿var {1}_API = {0}/api/v1/{1}/{0};
+
+//================= Search Customizaiton =========================================
+
+function {1}_GetSearchParameter(fileType) <1>
+    var {1}SearchObject = new Object();
+{2}
+
+    {1}SearchObject.fileType = fileType;
+
+    console.log({1}SearchObject);
+
+    return {1}SearchObject;
+<2>
+
+function {1}_FeedDataToSearchForm(data) <1>
+{3}
+<2>
+
+//================= Form Data Customizaiton =========================================
+
+function {1}_InitialForm(s) <1>
+    var successFunc = function (result) <1>
+        {1}_FeedDataToSearchForm(result);
+        endLoad();
+    <2>;
+    startLoad();
+    AjaxGetRequest(apisite + {1}_API + {0}GetBlankItem{0}, successFunc, AlertDanger);
+<2>
+
+//================= Data Table =========================================
+
+var s_{1}_customValidation = function (group) <1>
+    return {0}{0};
+<2>;
+
+
+function {1}_DoSearch(fileType) <1>
+    if (!ValidateForm('s_{1}', s_{1}_customValidation)) <1>
+        return;
+    <2>
+
+    var p = $.param({1}_GetSearchParameter(fileType));
+
+    var report_url = apisite + {0}/api/{1}/{1}_report?{0} + p;
+
+    if (fileType === {0}pdf{0}) <1>        
+        $({0}#report_result{0}).attr({0}src{0}, report_url);
+        $({0}#report_result{0}).show();
+        //window.open(report_url);
+    <2> else <1>
+        $({0}#report_result{0}).hide();
+        window.open(report_url);
+    <2>
+<2>
+

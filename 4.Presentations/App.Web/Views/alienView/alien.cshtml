@@ -1,0 +1,147 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@{
+    ViewData["Title"] = "alien";
+}
+
+<div class="modal fade" id="alienModel" style="z-index:1500" tabindex="-1" role="dialog" aria-labelledby="alienModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alienModelLabel">บันทึกข้อมูล alien</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <input class="form-control" type="hidden" id="alien_id" />
+
+                        <div class='row'></div>
+                        <div class='row'></div>
+                        <div class='row'>
+                            <div class="form-group col-md-4">
+                                <label id="lab_alien_name" for="alien_name">Alien Name</label>
+                                <input class="form-control" type="text" id="alien_name" iLabel="Alien Name" iRequire="true" iGroup="alien" />
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label id="lab_alien_origin_planet" for="alien_origin_planet">Origin Planet</label>
+                                <input class="form-control" type="text" id="alien_origin_planet" iLabel="Origin Planet" iRequire="true" iGroup="alien" />
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class="form-group col-md-12">
+                                <label id="lab_alien_species" for="alien_species">Species</label>
+                                <textarea class="form-control" rows="4" cols="50" id="alien_species" iLabel="Species" iRequire="true" iGroup="alien" ></textarea>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                <button type="button" class="btn btn-primary" onclick="javascript:alien_PutUpdate()">บันทึก</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@Configuration["SiteInformation:modulename"]</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item "><a href="@Configuration["SiteInformation:mainsite"]">หน้าแรก</a></li>
+                    <li class="breadcrumb-item "><a href="@Configuration["SiteInformation:mainsite"]@Configuration["SiteInformation:appsite"]">@Configuration["SiteInformation:modulename"]</a></li>
+                    <li class="breadcrumb-item active">alien</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+
+        <!-- general form elements -->
+        <div class="card card-primary">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="form-group col-md-3">
+                        <label id='lab_s_alien_name' for='s_alien_name'>Alien Name</label>
+                        <input class="form-control" type="text" id="s_alien_name" iLabel="Alien Name" iRequire="true" iGroup="s_alien" title='Alien Name' placeholder='Alien Name' />
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label id='lab_s_alien_species' for='s_alien_species'>Species</label>
+                        <input class="form-control" type="text" id="s_alien_species" iLabel="Species" iRequire="true" iGroup="s_alien" title='Species' placeholder='Species' />
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label id='lab_s_alien_origin_planet' for='s_alien_origin_planet'>Origin Planet</label>
+                        <input class="form-control" type="text" id="s_alien_origin_planet" iLabel="Origin Planet" iRequire="true" iGroup="s_alien" title='Origin Planet' placeholder='Origin Planet' />
+                    </div>
+
+
+                    <div class="form-group col-sm-3">
+                        <button class="btn btn-info" onclick="javascript:alien_DoSearch();"><i class="fa fa-search" style="font-size: 14px;"></i> ค้นหา</button>
+                        <button class="btn btn-info" onclick="javascript:alien_GoCreate();"><i class="fa fa-plus" style="font-size: 14px;"></i> เพิ่มรายการ</button>
+                        <button style="display:none;" class="btn btn-info" onclick="javascript:alien_GetSelect('id');">ดึงตัวเลือก</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        <!-- general form elements -->
+        <div class="card card-primary">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="alienTable" class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <!--<th>เลือก</th>-->
+                                    <th>เครื่องมือ</th>
+                                    <th><label id='h_alien_name'>Alien Name</label></th>
+                                    <th><label id='h_alien_species'>Species</label></th>
+                                    <th><label id='h_alien_origin_planet'>Origin Planet</label></th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+    </div><!-- /.container-fluid -->
+
+</section>
+<!-- /.content -->
+@section FooterPlaceHolder{
+    <script src="~/js/alien/alien.js"></script>
+    <script>
+        $(document).ready(function () {
+            alien_InitiateDataTable();
+            alien_InitialForm();
+            SetupValidationRemark("alien");
+        });
+    </script>
+}
+

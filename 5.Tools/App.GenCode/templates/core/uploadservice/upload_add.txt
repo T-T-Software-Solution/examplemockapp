@@ -1,0 +1,7 @@
+﻿            if (!string.IsNullOrEmpty(model.{0}))
+            <1>
+                //Move file from temp to physical
+                string {0}FileName = FileUtil.MoveTempUploadFileToActualPath(
+                    model.{0}, FilePathConstant.DirType.FilesTestUpload, entity.id);
+                entity.{0} = {0}FileName;
+            <2>

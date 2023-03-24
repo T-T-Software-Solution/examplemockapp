@@ -1,0 +1,10 @@
+﻿using System.Collections.Generic;
+
+namespace {0}.Domain
+<1>
+    public class {1}SearchModel
+    <1>
+{2}
+    <2>
+<2>
+

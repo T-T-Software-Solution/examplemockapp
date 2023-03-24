@@ -1,0 +1,28 @@
+﻿        //public void InsertListBy{1}(Guid {1}, List<Guid> items)
+        //<1>
+        //    // Delete existing data first
+        //    _repository.Delete(c => c.{1} == {1});
+
+        //    // Then add new data
+        //    var list = new List<{0}Entity>();
+
+        //    // Convert input to entity list
+        //    foreach (var item in items)
+        //    <1>
+		//		var entity = new {0}Entity();
+        //        entity.id = Guid.NewGuid();
+        //        entity.{1} = {1};
+
+        //        list.Add(entity);
+        //    <2>
+
+        //    _repository.Insert(list);
+        //<2>
+
+        public List<{0}ViewModel> GetListBy{1}(Guid? {1})
+        <1>
+            var entities = _repository.GetList(c =>
+                                (c.{1} == {1})).ToList();
+
+            return GetDtoList(entities);
+        <2>

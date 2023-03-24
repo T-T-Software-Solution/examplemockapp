@@ -1,0 +1,18 @@
+﻿                if (!string.IsNullOrEmpty(model.{0}))
+                <1>
+					if (model.{0}.StartsWith("Uploads"))
+					<1>
+						var {0}FileName = FileUtil.MoveTempUploadFileToActualPath(
+                        model.{0}, FilePathConstant.DirType.FilesTestUpload, existingEntity.id, existingEntity.{0});
+						existingEntity.{0} = {0}FileName;
+					<2>
+					else
+					<1>
+						existingEntity.{0} = model.{0};
+					<2>                    
+                <2>
+				else
+				<1>
+					existingEntity.{0} = null;
+				<2>
+

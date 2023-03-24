@@ -1,0 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace {0}.Domain
+<1>
+    public class {1}WithSelectionViewModel: {1}ViewModel
+    <1>
+{2}
+    <2>
+<2>

@@ -1,0 +1,94 @@
+﻿var {1}_editMode = {0}CREATE{0};
+var {1}_API = {0}/api/v1/{1}/{0};
+
+//================= Form Data Customizaiton =========================================
+
+function {1}_FeedDataToForm(data) <1>
+{2}
+<2>
+
+function {1}_GetFromForm() <1>
+    var {1}Object = new Object();
+{3}
+
+    return {1}Object;
+<2>
+
+function {1}_InitialForm() <1>
+    var successFunc = function (result) <1>
+        {1}_FeedDataToForm(result);
+		endLoad();
+    <2>;
+	startLoad();
+    AjaxGetRequest(apisite + {1}_API + {0}GetBlankItem{0}, successFunc, AlertDanger);
+<2>
+
+//================= Form Mode Setup and Flow =========================================
+
+function {1}_SetEditForm(a) <1>
+    var successFunc = function (result) <1>
+        {1}_editMode = {0}UPDATE{0};
+        {1}_FeedDataToForm(result);
+		endLoad();
+    <2>;
+	startLoad();
+    AjaxGetRequest(apisite + {1}_API + a, successFunc, AlertDanger);
+<2>
+
+function {1}_SetCreateForm() <1>
+    {1}_editMode = {0}CREATE{0};
+	{1}_InitialForm();
+<2>
+
+//================= Update and Delete =========================================
+
+var {1}_customValidation = function (group) <1>
+    return {0}{0};
+<2>;
+
+function {1}_PutUpdate() <1>
+	if (!ValidateForm('{1}', {1}_customValidation))
+    <1>
+        return;
+    <2>
+    var data = {1}_GetFromForm();
+
+    //Update Mode
+    if ({1}_editMode === {0}UPDATE{0}) <1>
+        var successFunc1 = function (result) <1>
+            AlertSuccess(result.code+{0} {0}+result.message);
+			endLoad();
+        <2>;
+		startLoad();
+        AjaxPutRequest(apisite + {1}_API + data.id, data, successFunc1, AlertDanger);
+    <2>
+    // Create mode
+    else <1>
+        var successFunc2 = function (result) <1>
+            AlertSuccess(result.code+{0} {0}+result.message);
+			endLoad();
+        <2>;
+		startLoad();
+        AjaxPostRequest(apisite + {1}_API, data, successFunc2, AlertDanger);
+    <2>
+<2>
+
+function {1}_GoDelete(a) <1>
+    if (confirm('คุณต้องการลบ ' + a + ' ใช่หรือไม่?')) <1>
+        var successFunc = function (result) <1>
+            AlertSuccess(result.code+{0} {0}+result.message);
+            {1}_RefreshTable();
+			endLoad();
+        <2>;
+		startLoad();
+        AjaxDeleteRequest(apisite + {1}_API + a, null, successFunc, AlertDanger);
+    <2>
+<2>
+
+//================= File Upload =========================================
+
+{8}
+
+//================= Multi-Selection Function =========================================
+
+{9}

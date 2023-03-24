@@ -1,0 +1,93 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@{
+    ViewData["Title"] = "sighting";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>@Configuration["SiteInformation:modulename"]</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item "><a href="@Configuration["SiteInformation:mainsite"]">หน้าแรก</a></li>
+                    <li class="breadcrumb-item "><a href="@Configuration["SiteInformation:mainsite"]@Configuration["SiteInformation:appsite"]">@Configuration["SiteInformation:modulename"]</a></li>
+                    <li class="breadcrumb-item active">sighting</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+
+        <!-- general form elements -->
+        <div class="card card-primary">
+            <div class="card-body">
+                <div class="row">
+
+
+                        <div class="form-group col-md-3">
+                            <label id='lab_s_sighting_alien_id' for='s_sighting_alien_id'>Alien</label>
+                            <select class="form-control" id="s_sighting_alien_id" iLabel="Alien" iRequire="true" iGroup="s_sighting" title='Alien' placeholder='Alien'></select>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label id='lab_s_sighting_found_date' for='s_sighting_found_date'>Found Date</label>
+                            <input class="form-control" type="text" id="s_sighting_found_date" data-provide="datepicker" data-date-language="th-th" iLabel="Found Date" iRequire="true" iGroup="s_sighting" title='Found Date' placeholder='Found Date' />
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label id='lab_s_sighting_location' for='s_sighting_location'>Location</label>
+                            <textarea  class="form-control" rows="4" cols="50" id="s_sighting_location" iLabel="Location" iRequire="true" iGroup="s_sighting" title='Location' placeholder='Location'></textarea>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label id='lab_s_sighting_witness' for='s_sighting_witness'>Witness</label>
+                            <input class="form-control" type="text" id="s_sighting_witness" iLabel="Witness" iRequire="true" iGroup="s_sighting" title='Witness' placeholder='Witness' />
+                        </div>
+  
+
+
+                    <div class="form-group col-sm-6">
+                        <button class="btn btn-primary" onclick="javascript:sighting_DoSearch('pdf');">แสดงรายงาน</button>
+                        <button class="btn btn-primary" onclick="javascript:sighting_DoSearch('xlsx');">ดาวน์โหลดเป็น Excel</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        <!-- general form elements -->
+        <div class="card card-primary">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <iframe id="report_result" style="display:none; height:500px; width:100%;"></iframe>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+    </div><!-- /.container-fluid -->
+
+</section>
+<!-- /.content -->
+
+@section FooterPlaceHolder{
+    <script src="~/js/sighting/sighting_report.js"></script>
+    <script>
+        $(document).ready(function () {
+            sighting_InitialForm();
+            SetupValidationRemark("s_sighting");
+        });
+    </script>
+}
+

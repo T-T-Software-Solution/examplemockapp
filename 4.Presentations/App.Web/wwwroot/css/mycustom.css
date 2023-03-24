@@ -1,0 +1,16 @@
+﻿@font-face {
+    font-family: Kanit;
+    src: url('../fonts/Kanit 300.ttf');
+}
+
+body {    
+    font-family: Kanit, sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+}
+
+.form-control {
+    color:blue; 
+    font-weight:bold;
+}

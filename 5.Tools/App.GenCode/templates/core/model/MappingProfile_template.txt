@@ -1,0 +1,16 @@
+﻿using AutoMapper;
+using App.Domain;
+
+namespace {0}.Database
+<1>
+    public class {1}MappingProfile : Profile
+    <1>
+        public {1}MappingProfile()
+        <1>
+            CreateMap<{1}InputModel, {1}Entity>();
+            CreateMap<{1}Entity, {1}InputModel>();
+            CreateMap<{1}Entity, {1}ViewModel>();
+            CreateMap<{1}Entity, {1}WithSelectionViewModel>();
+        <2>
+    <2>
+<2>

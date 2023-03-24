@@ -1,0 +1,73 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@<1>
+    ViewData[{0}Title{0}] = {0}{3}{0};
+<2>
+
+<!-- Content Header (Page header) -->
+<section class={0}content-header{0}>
+    <div class={0}container-fluid{0}>
+        <div class={0}row mb-2{0}>
+            <div class={0}col-sm-6{0}>
+                <h1>@Configuration[{0}SiteInformation:modulename{0}]</h1>
+            </div>
+            <div class={0}col-sm-6{0}>
+                <ol class={0}breadcrumb float-sm-right{0}>
+                    <li class={0}breadcrumb-item {0}><a href={0}@Configuration[{0}SiteInformation:mainsite{0}]{0}>หน้าแรก</a></li>
+                    <li class={0}breadcrumb-item {0}><a href={0}@Configuration[{0}SiteInformation:mainsite{0}]@Configuration[{0}SiteInformation:appsite{0}]{0}>@Configuration[{0}SiteInformation:modulename{0}]</a></li>
+                    <li class={0}breadcrumb-item active{0}>{3}</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class={0}content{0}>
+    <div class={0}container-fluid{0}>
+
+        <!-- general form elements -->
+        <div class={0}card card-primary{0}>
+            <div class={0}card-body{0}>
+                <div class={0}row{0}>
+
+{2}  
+
+
+                    <div class={0}form-group col-sm-6{0}>
+                        <button class={0}btn btn-primary{0} onclick={0}javascript:{1}_DoSearch('pdf');{0}>แสดงรายงาน</button>
+                        <button class={0}btn btn-primary{0} onclick={0}javascript:{1}_DoSearch('xlsx');{0}>ดาวน์โหลดเป็น Excel</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        <!-- general form elements -->
+        <div class={0}card card-primary{0}>
+            <div class={0}card-body{0}>
+                <div class={0}row{0}>
+                    <div class={0}col-md-12{0}>
+                        <iframe id={0}report_result{0} style={0}display:none; height:500px; width:100%;{0}></iframe>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+    </div><!-- /.container-fluid -->
+
+</section>
+<!-- /.content -->
+
+@section FooterPlaceHolder<1>
+    <script src={0}~/js/{1}/{1}_report.js{0}></script>
+    <script>
+        $(document).ready(function () <1>
+            {1}_InitialForm();
+            SetupValidationRemark({0}s_{1}{0});
+        <2>);
+    </script>
+<2>
+

@@ -1,0 +1,38 @@
+﻿import React from 'react'
+import <1> Form, Input, Button <2> from 'antd';
+
+const {2}Searchform = (props) => <1>
+
+    const onFinish = values => <1>
+        handleSearch(values);
+    <2>;
+
+    const onFinishFailed = errorInfo => <1>
+        //console.log('Failed:', errorInfo);
+    <2>;
+
+    const handleSearch = async (values) => <1>
+
+        props.setSearchCondition(values);
+
+    <2>;
+
+    return (
+        <Form
+            name="demoform"
+            onFinish=<1>onFinish<2>
+            onFinishFailed=<1>onFinishFailed<2>
+            layout="inline"
+        >
+{3}
+            <Form.Item>
+                <Button type="primary" htmlType="submit">
+                    Submit
+                </Button>
+            </Form.Item>
+
+        </Form>
+    )
+<2>
+
+export default {2}Searchform

@@ -1,0 +1,321 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
+using System.Data;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using System.Net;
+using {2}.Api;
+using {2}.Core;
+using TTSW.Utils;
+using Swashbuckle.AspNetCore.Annotations;
+using {2}.Domain;
+
+namespace {2}.Controllers
+<1>
+    [Route("api/v<1>version:apiVersion<2>/{1}")]
+    [ApiVersion("1.0")]
+    [ApiController]
+    [Produces("application/json")]
+    //[Authorize]
+    [SwaggerTag("บริหารจัดการข้อมูล {1}")]
+
+    public class {1}Controller : BaseController
+    <1>
+        #region Private Variables
+        private ILogger<{1}Controller> _logger;
+        private I{1}Service _repository;
+		private IConfiguration Configuration <1> get; set; <2>
+        #endregion
+
+        #region Properties
+
+        #endregion
+
+        /// <summary>
+        /// Default constructure for dependency injection
+        /// </summary>
+        /// <param name={0}repository{0}></param>
+		/// <param name={0}configuration{0}></param>
+        /// <param name={0}logger{0}></param>
+        public {1}Controller(ILogger<{1}Controller> logger, I{1}Service repository, IConfiguration configuration)
+        <1>
+            _logger = logger;
+            _repository = repository;
+			Configuration = configuration;
+        <2>
+
+        /// <summary>
+        /// ดึงข้อมูล {1} โดย {7}
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <returns>ส่งข้อมูล {7}</returns>
+        /// <response code={0}200{0}>ดึงข้อมูลสำเร็จ</response>
+        /// <response code={0}401{0}>ไม่มีสิทธิในการใช้งาน</response>
+        /// <response code={0}500{0}>มีข้อผิดพลาดในการทำงานจากระบบ</response>  
+        [HttpGet({0}<1>{7}<2>{0})]
+        [ProducesResponseType(typeof({1}WithSelectionViewModel), 200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Get({6} {7})
+        <1>
+            try
+            <1>
+                var result = await _repository.GetWithSelectionAsync({7});
+
+                return Ok(result);
+            <2>
+            catch (Exception ex)
+            <1>
+                _logger.LogCritical(${0}Exception in IActionResult Get.{0}, ex);
+                return StatusCode(500, ${0}<1>ex.Message<2>{0});
+            <2>
+        <2>
+
+		/// <summary>
+        /// ดึงรายการเปล่าของ {1} สำหรับการสร้างฟอร์มเปล่า
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <returns>ส่งข้อมูลเปล่า</returns>
+        /// <response code={0}200{0}>ดึงข้อมูลสำเร็จ</response>
+        /// <response code={0}401{0}>ไม่มีสิทธิในการใช้งาน</response>
+        /// <response code={0}500{0}>มีข้อผิดพลาดในการทำงานจากระบบ</response>  
+        [HttpGet({0}GetBlankItem{0})]
+        [ProducesResponseType(typeof({1}WithSelectionViewModel), 200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> GetBlankItem()
+        <1>
+            try
+            <1>
+                var result = await _repository.GetBlankItemAsync();
+
+                return Ok(result);
+            <2>
+            catch (Exception ex)
+            <1>
+                _logger.LogCritical(${0}Exception in IActionResult GetBlankItem.{0}, ex);
+                return StatusCode(500, ${0}<1>ex.Message<2>{0});
+            <2>
+        <2>
+
+        /// <summary>
+        /// ดึงข้อมูล {1} โดยการค้นหา
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <returns>Return list of items by specifced keyword</returns>
+        /// <response code={0}200{0}>ดึงข้อมูลสำเร็จ</response>
+        /// <response code={0}401{0}>ไม่มีสิทธิในการใช้งาน</response>
+        /// <response code={0}500{0}>มีข้อผิดพลาดในการทำงานจากระบบ</response>  
+        [HttpGet("GetListBySearch")]
+        [ProducesResponseType(typeof(List<{1}ViewModel>), 200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> GetListBySearch([FromQuery]{1}SearchModel model)
+        <1>
+            try
+            <1>
+                return Ok(await _repository.GetListBySearchAsync(model));
+            <2>
+            catch (Exception ex)
+            <1>
+                _logger.LogCritical($"Exception in IActionResult GetListBySearch.", ex);
+                return StatusCode(500, $"<1>ex.Message<2>");
+            <2>
+        <2>	
+
+		/// <summary>
+        /// ดึงข้อมูลรายงาน {1}
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <returns>Return list of items by specifced keyword</returns>
+        /// <response code={0}200{0}>ดึงข้อมูลสำเร็จ</response>
+        /// <response code={0}401{0}>ไม่มีสิทธิในการใช้งาน</response>
+        /// <response code={0}500{0}>มีข้อผิดพลาดในการทำงานจากระบบ</response>  
+        [HttpGet({0}{1}_report{0})]
+        [ProducesResponseType(typeof(FileStreamResult), 200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> {1}_report({1}ReportRequestModel model)
+        <1>
+            try
+            <1>				
+                return File(await _repository.GetReportStreamAsync(model), model.contentType);
+            <2>
+            catch (Exception ex)
+            <1>
+                _logger.LogCritical(${0}Exception while GetReport.{0}, ex);
+                return StatusCode(500, ${0}<1>ex.Message<2>{0});
+            <2>
+        <2>
+
+        /// <summary>
+        /// เพิ่มข้อมูล {1}
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name={0}model{0}></param>
+        /// <returns>Response Result Message</returns>
+        /// <response code={0}200{0}>ดำเนินการเรียบร้อย</response>
+        /// <response code={0}401{0}>ไม่มีสิทธิในการใช้งาน</response>
+        /// <response code={0}500{0}>มีข้อผิดพลาดในการทำงานจากระบบ</response>  
+        [HttpPost({0}{0})]
+        [ProducesResponseType(typeof(CommonResponseMessage), 200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Insert([FromBody] {1}InputModel model)
+        <1>
+            if (ModelState.IsValid)
+            <1>
+                try
+                <1>
+                    var result = await _repository.InsertAsync(model, true);
+					var message = new CommonResponseMessage();
+                    message.code = "200";
+                    message.message = $"เพิ่มข้อมูล เรียบร้อย";
+                    message.data = result;
+                    return Ok(message);
+                <2>
+                catch (Exception ex)
+                <1>
+                    _logger.LogCritical(${0}Exception while insert.{0}, ex);
+                    return StatusCode(500, ${0}<1>ex.Message<2>{0});
+                <2>
+            <2>
+
+            return BadRequest(ModelState);
+        <2>
+
+        /// <summary>
+        /// ปรับปรุงข้อมูล {1}
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+		/// <param name={0}{7}{0}></param>
+        /// <param name={0}model{0}></param>
+        /// <returns>Response Result Message</returns>
+        /// <response code={0}200{0}>ดำเนินการเรียบร้อย</response>
+        /// <response code={0}401{0}>ไม่มีสิทธิในการใช้งาน</response>
+        /// <response code={0}500{0}>มีข้อผิดพลาดในการทำงานจากระบบ</response>  
+        [HttpPut({0}<1>id<2>{0})]
+        [ProducesResponseType(typeof(CommonResponseMessage), 200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update({6} {7}, [FromBody] {1}InputModel model)
+        <1>
+            if (ModelState.IsValid)
+            <1>
+                try
+                <1>
+                    var result = await _repository.UpdateAsync({7}, model, true);
+					var message = new CommonResponseMessage();
+                    message.code = "200";
+                    message.message = $"แก้ไขข้อมูล เรียบร้อย";
+                    message.data = result;
+                    return Ok(message);
+                <2>
+                catch (Exception ex)
+                <1>
+                    _logger.LogCritical(${0}Exception while update <1>{7}.ToString()<2>.{0}, ex);
+                    return StatusCode(500, ${0}<1>{7}.ToString()<2>. <1>ex.Message<2>{0});
+                <2>
+            <2>
+
+            return BadRequest(ModelState);
+        <2>        
+
+        /// <summary>
+        /// ลบรายการ {1}
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+		/// <param name={0}{7}{0}></param>
+        /// <returns>Response Result Message</returns>
+        /// <response code={0}200{0}>ดำเนินการเรียบร้อย</response>
+        /// <response code={0}401{0}>ไม่มีสิทธิในการใช้งาน</response>
+        /// <response code={0}500{0}>มีข้อผิดพลาดในการทำงานจากระบบ</response>  
+        [HttpDelete({0}<1>id<2>{0})]
+        [ProducesResponseType(typeof(CommonResponseMessage), 200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete({6} {7})
+        <1>
+            if (ModelState.IsValid)
+            <1>
+                try
+                <1>
+                    await _repository.DeleteAsync({7});
+					var message = new CommonResponseMessage();
+                    message.code = "200";
+                    message.message = $"ลบข้อมูล เรียบร้อย";
+                    message.data = null;
+                    return Ok(message);
+                <2>
+                catch (Exception ex)
+                <1>
+                    _logger.LogCritical(${0}Exception while delete <1>{7}<2>.{0}, ex);
+                    return StatusCode(500, ${0}<1>{7}<2>. <1>ex.Message<2>{0});
+                <2>
+            <2>
+
+            return BadRequest(ModelState);
+        <2>
+
+		/// <summary>
+        /// ปรับปรุง {1} ข้อมูลทีละหลายรายการ
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="model"></param>
+        /// <returns>Response Result Message</returns>
+        /// <response code={0}200{0}>ดำเนินการเรียบร้อย</response>
+        /// <response code={0}401{0}>ไม่มีสิทธิในการใช้งาน</response>
+        /// <response code={0}500{0}>มีข้อผิดพลาดในการทำงานจากระบบ</response>  
+        [HttpPut("UpdateMultiple")]
+        [ProducesResponseType(typeof(CommonResponseMessage), 200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateMultiple([FromBody] List<{1}InputModel> model)
+        <1>
+            if (ModelState.IsValid)
+            <1>
+				try
+				<1>
+					string rowCount = await _repository.UpdateMultipleAsync(model, true);
+					var message = new CommonResponseMessage();
+                    message.code = "200";
+                    message.message = "ปรับปรุงข้อมูลเรียบร้อย จำนวน "+rowCount+" รายการ";
+                    message.data = null;
+                    return Ok(message);
+				<2>
+				catch (Exception ex)
+                <1>
+                    _logger.LogCritical($"Exception while UpdateMultiple.", ex);
+                    return StatusCode(500, $"<1>ex.Message<2>");
+                <2>   
+            <2>
+
+            return BadRequest(ModelState);
+        <2>
+
+{5}
+
+    <2>
+<2>

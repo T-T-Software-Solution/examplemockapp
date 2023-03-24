@@ -1,0 +1,32 @@
+﻿.iframe-con{
+ background: #fff;
+ width: 0;
+ height: 0;
+ overflow: hidden;
+ border: none;
+}
+.iframe-con iframe{
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+.iframe-visible{
+ display: block;
+ position: fixed;
+ left: 0;
+ top: 0;
+ width: 100%;
+ height: 100%;
+ z-index: 99999;
+ bottom: 0;
+ overflow-y:scroll !important;
+ -webkit-overflow-scrolling:touch !important; 
+ 
+}
+.overflow-fix{
+ overflow: hidden !important;
+}

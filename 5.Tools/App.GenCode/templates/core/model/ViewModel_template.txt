@@ -1,0 +1,10 @@
+﻿using System.Collections.Generic;
+
+namespace {0}.Domain
+<1>
+    public class {1}ViewModel : BaseViewModel<{4}>
+    <1>
+{2}
+{3}
+    <2>
+<2>

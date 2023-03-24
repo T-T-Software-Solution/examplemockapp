@@ -1,0 +1,18 @@
+﻿@<1>
+    ViewData[{0}Title{0}] = {0}About{0};
+<2>
+
+<div style={0}padding-top:20px{0}>
+    &nbsp;
+</div>
+
+<div id={0}{1}_container{0} class={0}row{0}></div>
+
+
+<script src={0}~/js/{1}.js{0}></script>
+
+<script>
+    $(document).ready(function () <1>
+        {1}_InitiateAjaxLayout();
+    <2>);
+</script>

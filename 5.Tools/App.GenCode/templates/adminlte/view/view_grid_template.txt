@@ -1,0 +1,109 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@<1>
+    ViewData[{0}Title{0}] = {0}{6}{0};
+<2>
+
+<div class={0}modal fade{0} id={0}{1}Model{0} style={0}z-index:1500{0} tabindex={0}-1{0} role={0}dialog{0} aria-labelledby={0}{1}ModelLabel{0} aria-hidden={0}true{0}>
+    <div class={0}modal-dialog modal-lg{0} role={0}document{0}>
+        <div class={0}modal-content{0}>
+            <div class={0}modal-header{0}>
+                <h5 class={0}modal-title{0} id={0}{1}ModelLabel{0}>บันทึกข้อมูล {6}</h5>
+                <button type={0}button{0} class={0}close{0} data-dismiss={0}modal{0} aria-label={0}Close{0}>
+                    <span aria-hidden={0}true{0}>&times;</span>
+                </button>
+            </div>
+            <div class={0}modal-body{0}>
+                <div class={0}row{0}>
+                    <div class={0}col-md-12{0}>
+
+{2}
+
+                    </div>
+                </div>
+            </div>
+            <div class={0}modal-footer{0}>
+                <button type={0}button{0} class={0}btn btn-secondary{0} data-dismiss={0}modal{0}>ยกเลิก</button>
+                <button type={0}button{0} class={0}btn btn-primary{0} onclick={0}javascript:{1}_PutUpdate(){0}>บันทึก</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Content Header (Page header) -->
+<section class={0}content-header{0}>
+    <div class={0}container-fluid{0}>
+        <div class={0}row mb-2{0}>
+            <div class={0}col-sm-6{0}>
+                <h1>@Configuration[{0}SiteInformation:modulename{0}]</h1>
+            </div>
+            <div class={0}col-sm-6{0}>
+                <ol class={0}breadcrumb float-sm-right{0}>
+                    <li class={0}breadcrumb-item {0}><a href={0}@Configuration[{0}SiteInformation:mainsite{0}]{0}>หน้าแรก</a></li>
+                    <li class={0}breadcrumb-item {0}><a href={0}@Configuration[{0}SiteInformation:mainsite{0}]@Configuration[{0}SiteInformation:appsite{0}]{0}>@Configuration[{0}SiteInformation:modulename{0}]</a></li>
+                    <li class={0}breadcrumb-item active{0}>{6}</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class={0}content{0}>
+    <div class={0}container-fluid{0}>
+
+        <!-- general form elements -->
+        <div class={0}card card-primary{0}>
+            <div class={0}card-body{0}>
+                <div class={0}row{0}>
+        {5}
+
+                    <div class={0}form-group col-sm-3{0}>
+                        <button class={0}btn btn-info{0} onclick={0}javascript:{1}_DoSearch();{0}><i class={0}fa fa-search{0} style={0}font-size: 14px;{0}></i> ค้นหา</button>
+                        <button class={0}btn btn-info{0} onclick={0}javascript:{1}_GoCreate();{0}><i class={0}fa fa-plus{0} style={0}font-size: 14px;{0}></i> เพิ่มรายการ</button>
+                        <button style={0}display:none;{0} class={0}btn btn-info{0} onclick={0}javascript:{1}_GetSelect('id');{0}>ดึงตัวเลือก</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        <!-- general form elements -->
+        <div class={0}card card-primary{0}>
+            <div class={0}card-body{0}>
+                <div class={0}row{0}>
+                    <div class={0}col-md-12{0}>
+                        <table id={0}{1}Table{0} class={0}table table-hover text-nowrap{0}>
+                            <thead>
+                                <tr>
+                                    <!--<th>เลือก</th>-->
+                                    <th>เครื่องมือ</th>
+{3}
+
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+    </div><!-- /.container-fluid -->
+
+</section>
+<!-- /.content -->
+
+@section FooterPlaceHolder<1>
+    <script src={0}~/js/{1}/{1}.js{0}></script>
+    <script>
+        $(document).ready(function () <1>
+            {1}_InitiateDataTable();
+            {1}_InitialForm();
+            SetupValidationRemark({0}{1}{0});
+        <2>);
+    </script>
+<2>
+

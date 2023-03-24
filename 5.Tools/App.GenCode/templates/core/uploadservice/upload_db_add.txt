@@ -1,0 +1,12 @@
+﻿            if(!string.IsNullOrEmpty(model.{0}))
+            <1>
+                // Move file from temp to base64
+                var {0}base64Info = FileUtil.MoveTempUploadFileToBase64File(model.{0});
+                if ({0}base64Info != null)
+                <1>
+                    entity.{0}Base64Content = {0}base64Info.Content;
+                    entity.{0}Base64FileName = {0}base64Info.FileName;
+                    entity.{0}Base64MimeType = {0}base64Info.MimeType;
+                    entity.{0} = {0}base64Info.FileName;
+                <2>
+            <2>
